@@ -1,0 +1,12 @@
+state_machine.c:51:6:read_temp	16	static
+state_machine.c:60:6:average_wait	40	static
+state_machine.c:72:6:temp_alert	8	static
+state_machine.c:80:6:handle_event_state	24	static
+state_machine.c:186:6:temp_reading_handle_complete	16	static
+state_machine.c:192:6:temp_reading_handle_alert	16	static
+state_machine.c:198:6:temp_reading_handle_disconnect	16	static
+state_machine.c:204:6:temp_alert_handle_complete	16	static
+state_machine.c:210:6:temp_alert_handle_disconnect	16	static
+state_machine.c:216:6:avg_wait_handle_timeout	24	static
+state_machine.c:233:6:avg_wait_handle_disconnect	16	static
+state_machine.c:252:6:handle_event_table	32	static

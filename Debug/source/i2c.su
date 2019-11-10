@@ -1,0 +1,7 @@
+i2c.c:69:13:communicationErrorOccured	8	static
+i2c.c:93:6:i2c_init	8	static
+i2c.c:112:6:i2c_write_byte	24	static
+i2c.c:136:6:i2c_write_bytes	32	static
+i2c.c:159:9:i2c_read_byte	24	static
+i2c.c:193:6:i2c_read_bytes	24	static
+i2c.c:241:6:i2c_connected	32	static

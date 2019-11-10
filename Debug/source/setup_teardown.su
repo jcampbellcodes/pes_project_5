@@ -1,0 +1,4 @@
+fsl_gpio.h:157:20:GPIO_WritePinOutput	24	static
+fsl_gpio.h:175:20:GPIO_SetPinsOutput	16	static
+setup_teardown.c:24:6:initialize	8	static
+setup_teardown.c:63:6:terminate	8	static

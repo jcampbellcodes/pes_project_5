@@ -1,0 +1,8 @@
+tmp102.c:52:7:readTempC	24	static
+tmp102.c:74:7:readLowTempC	24	static
+tmp102.c:95:7:readHighTempC	24	static
+tmp102.c:116:6:alert	8	static
+tmp102.c:126:6:setLowTempC	32	static
+tmp102.c:148:6:setHighTempC	32	static
+tmp102.c:172:6:setAlertMode	32	static
+tmp102.c:185:6:tmp102_connected	8	static
