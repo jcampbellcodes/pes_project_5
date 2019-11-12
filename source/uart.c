@@ -1,7 +1,17 @@
 #include "uart.h"
+#include "handle_led.h"
+#include "circular_buffer.h"
+#include <stddef.h>
+
+#define UART_CAPACITY 256
+
+static cbuf_handle_t sTxBuffer = NULL;
+static cbuf_handle_t sRxBuffer = NULL;
 
 void uart_init(int64_t baud_rate)
 {
+	 //set_led(1, BLUE);
+
 	uint16_t sbr;
 	uint8_t temp;
 
@@ -48,15 +58,22 @@ void uart_init(int64_t baud_rate)
 
 #if USE_UART_INTERRUPTS
 	// Enable interrupts. Listing 8.11 on p. 234
-	Q_Init(&TxQ);
-	Q_Init(&RxQ);
+	sTxBuffer = circular_buf_init(UART_CAPACITY);
+	sRxBuffer = circular_buf_init(UART_CAPACITY);
 
 	NVIC_SetPriority(UART0_IRQn, 2); // 0, 1, 2, or 3
 	NVIC_ClearPendingIRQ(UART0_IRQn);
 	NVIC_EnableIRQ(UART0_IRQn);
 
 	// Enable receive interrupts but not transmit interrupts yet
-	UART0->C2 |= UART_C2_RIE(1);
+	// also turn on error interrupts
+	UART0->C2 |= UART_C2_RIE(1) |
+			     UART_C2_TIE(1);
+
+	UART0->C3 |= UART_C3_ORIE(1) |
+				 UART_C3_NEIE(1) |
+				 UART_C3_PEIE(1) |
+				 UART_C3_FEIE(1);
 #endif
 
 	// Enable UART receiver and transmitter
@@ -68,32 +85,36 @@ void uart_init(int64_t baud_rate)
 
 }
 
-char uart_getchar()
-{
-      /* Wait until character has been received */
-      while (!(UART0->S1 & UART0_S1_RDRF_MASK));
-
-      /* Return the 8-bit data from the receiver */
-      return UART0->D;
-}
-
 bool uart_putchar_space_available ()
 {
+	//set_led(1, GREEN);
     return (UART0->S1 & UART0_S1_TDRE_MASK);
 }
 
 bool uart_getchar_present ()
 {
+	//set_led(1, BLUE);
     return (UART0->S1 & UART0_S1_RDRF_MASK);
 }
 
 void uart_putchar (char ch)
 {
-      /* Wait until space is available in the FIFO */
-      while(!(UART0->S1 & UART0_S1_TDRE_MASK));
+	 //set_led(1, GREEN);
+    /* Wait until space is available in the FIFO */
+    while(!(UART0->S1 & UART0_S1_TDRE_MASK));
 
-      /* Send the character */
-      UART0->D = (uint8_t)ch;
+    /* Send the character */
+    UART0->D = (uint8_t)ch;
+}
+
+char uart_getchar()
+{
+	 //set_led(1, BLUE);
+    /* Wait until character has been received */
+    while (!(UART0->S1 & UART0_S1_RDRF_MASK));
+
+    /* Return the 8-bit data from the receiver */
+    return UART0->D;
 
 }
 
@@ -107,27 +128,74 @@ void uart_put_string(const char* str) {
 
 void uart_echo()
 {
-	while(1)
+#if USE_UART_INTERRUPTS
+	uint8_t outChar;
+	while(circular_buf_pop(sRxBuffer, &outChar) == buff_err_success)
 	{
-		uint8_t ch = uart_getchar();
-		uart_putchar(ch);
+		circular_buf_push(sTxBuffer, outChar);
+		UART0->C2 |= UART0_C2_TIE_MASK;
+	}
+#else
+	uint8_t ch = uart_getchar();
+	uart_putchar(ch);
+#endif
+}
+
+// UART0 IRQ Handler. Listing 8.12 on p. 235
+void UART0_IRQHandler(void) {
+	uint8_t ch;
+
+	// error handling
+	if (UART0->S1 & (UART_S1_OR_MASK |UART_S1_NF_MASK |
+		             UART_S1_FE_MASK | UART_S1_PF_MASK))
+	{
+			// clear the error flags
+			UART0->S1 |= UART0_S1_OR_MASK | UART0_S1_NF_MASK |
+						 UART0_S1_FE_MASK | UART0_S1_PF_MASK;
+			// read the data register to clear RDRF
+			ch = UART0->D;
+
+			 //set_led(1, RED);
+	}
+
+	// received a character
+	if (UART0->S1 & UART0_S1_RDRF_MASK)
+	{
+
+		ch = UART0->D;
+		if (!circular_buf_full(sRxBuffer))
+		{
+			circular_buf_push(sRxBuffer, ch);
+		}
+		else
+		{
+			// error - queue full.
+			// discard character
+		}
+
+		 //set_led(1, BLUE);
+	}
+
+	// transmitter interrupt enabled and tx buffer empty
+	if ( (UART0->C2 & UART0_C2_TIE_MASK) &&
+			(UART0->S1 & UART0_S1_TDRE_MASK) )
+	{
+		// can send another character
+		if (!circular_buf_empty(sTxBuffer))
+		{
+			uint8_t outCh = -1;
+			if(circular_buf_pop(sTxBuffer, &outCh) == buff_err_success)
+			{
+			  UART0->D = outCh;
+			}
+		}
+		else
+		{
+			// queue is empty so disable transmitter interrupt
+			UART0->C2 &= ~UART0_C2_TIE_MASK;
+		}
+		 //set_led(1, GREEN);
 	}
 }
 
-/********************************************************************/
-//#if UART_MODE == INTERRUPT
-//void UART0_IRQHandler (void)
-//{
-//  char c = 0;
-//  if (UART0->S1 & UART_S1_RDRF_MASK)
-//  {
-//    c = UART0->D;
-//
-//    if ((UART0->S1 &UART_S1_TDRE_MASK) || (UART0->S1 & UART_S1_TC_MASK))
-//    {
-//    	UART0->D  = c;
-//    }
-//  }
-//}
-//#endif
 

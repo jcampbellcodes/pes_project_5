@@ -42,7 +42,6 @@ typedef struct circular_buf_t {
 // Handle type, the way users interact with the API
 typedef circular_buf_t* cbuf_handle_t;
 
-
 /// Pass in a storage buffer and size
 /// Returns a circular buffer handle
 cbuf_handle_t circular_buf_init(size_t inSize);

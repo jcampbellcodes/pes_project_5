@@ -5,6 +5,7 @@
 #include "circular_buffer.h"
 #include <assert.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 /**
  * ABS
@@ -19,11 +20,12 @@
 struct mem_list_node
 {
 	circular_buf_t* data;
+	size_t size;
 	struct mem_list_node* next;
 };
 
 // sentinel struct, always has null data
-static struct mem_list_node memListHead = { NULL, NULL };
+static struct mem_list_node memListHead = { NULL, 0, NULL };
 
 bool bufferIsOwned(cbuf_handle_t inHandle)
 {
@@ -49,15 +51,21 @@ bool bufferIsOwned(cbuf_handle_t inHandle)
 cbuf_handle_t circular_buf_init(size_t inSize)
 {
 	assert(inSize);
+
 	struct mem_list_node* iter = &memListHead;
+
 	while(iter->next)
 	{
 		iter = iter->next;
 	}
 	iter->next = (struct mem_list_node*)malloc(sizeof(struct mem_list_node));
-	iter->next->data = malloc(sizeof(circular_buf_t));
+
+	iter->next->data = (circular_buf_t*)malloc(sizeof(circular_buf_t));
+
 	assert(iter->next->data);
-	iter->next->data->buffer = malloc(sizeof(uint8_t)*inSize);
+
+	iter->next->data->buffer = (uint8_t*)malloc(sizeof(uint8_t)*inSize);
+	assert(iter->next->data->buffer);
 	iter->next->data->max = inSize;
 	iter->next->data->write = 0;
 	iter->next->data->read = 0;

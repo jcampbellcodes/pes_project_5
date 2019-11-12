@@ -25,10 +25,21 @@
 #include "logger.h"
 #include "post.h"
 #include "delay.h"
+#include "uart.h"
+
+#define ECHO_MODE
 
 int main(void) {
 
 	initialize();
+
+#ifdef ECHO_MODE
+	while(1)
+	{
+	    uart_echo();
+	}
+#else // application mode
+#endif
 
     return 0 ;
 }

@@ -33,6 +33,15 @@ void initialize()
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
 
+	/* led setup */
+	LED_RED_INIT(1);
+	LED_BLUE_INIT(1);
+	LED_GREEN_INIT(1);
+
+	LED_BLUE_OFF();
+	LED_GREEN_OFF();
+	LED_RED_OFF();
+
 	uart_init(UART_BAUD_RATE);
 
 #ifdef DEBUG
@@ -42,17 +51,6 @@ void initialize()
 #else
 	log_enable(SEVERITY_STATUS);
 #endif
-
-
-
-	/* led setup */
-	LED_RED_INIT(1);
-	LED_BLUE_INIT(1);
-	LED_GREEN_INIT(1);
-
-	LED_BLUE_OFF();
-	LED_GREEN_OFF();
-	LED_RED_OFF();
 
 	if(!power_on_self_test())
 		exit(-1);
