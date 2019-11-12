@@ -19,21 +19,31 @@
 #include "post.h"
 #include "logger.h"
 #include "stdlib.h"
+#include "MKL25Z4.h"
+#include "uart.h"
+
+#define UART_BAUD_RATE 115200
+//#define UART_BAUD_RATE 9600
+//#define UART_BAUD_RATE 38400
+//#define UART_BAUD_RATE 115200
 
 void initialize()
 {
   	/* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
-    BOARD_InitBootPeripherals();
+
+	uart_init(UART_BAUD_RATE);
 
 #ifdef DEBUG
-	BOARD_InitDebugConsole();
+	//BOARD_InitDebugConsole();
 	log_enable(LOG_SEVERITY_TEST);
 	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program start");
 #else
 	log_enable(SEVERITY_STATUS);
 #endif
+
+
 
 	/* led setup */
 	LED_RED_INIT(1);

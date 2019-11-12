@@ -37,7 +37,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "System.h"
-#include "fsl_debug_console.h"
+#include "logger.h"
+#include "uart.h"
+//#include "fsl_debug_console.h"
 
 void System_exit(int val) {
 	for(;;) {
@@ -52,8 +54,7 @@ void System_exit(int val) {
 /* Stub: Initialize your hardware here */
 void System_Init(void)
 {
-
-	PRINTF("Init of hardware finished.\n");
+	LOG_STRING(LOG_MODULE_UNIT_TEST, LOG_SEVERITY_TEST, "Init of hardware finished.\n");
 }
 
 /* Stub: Shutdown your hardware here */
@@ -61,7 +62,7 @@ void System_Shutdown(void)
 {
 
 	/* asm("\tSTOP"); */
-	PRINTF("System shutdown.\n");
+	LOG_STRING(LOG_MODULE_UNIT_TEST, LOG_SEVERITY_TEST, "System shutdown.\n");
 	System_exit(0);
 }
 
@@ -70,7 +71,7 @@ void System_Recover(void)
 {
 	/* Stub: Recover the hardware */
 	/* asm("\tRESET"); */
-	PRINTF("System reset.\n");
+	LOG_STRING(LOG_MODULE_UNIT_TEST, LOG_SEVERITY_TEST, "System reset.\n");
 	System_exit(0);
 }
 
@@ -87,17 +88,17 @@ void System_Safestate(void)
 
 	/* Put processor into idle state */
 	/* asm("\tIDLE"); */
-	PRINTF("System safe state.\n");
+	LOG_STRING(LOG_MODULE_UNIT_TEST, LOG_SEVERITY_TEST, "System safe state.\n");
 	System_exit(0);
 }
 
 /* Stub: Transmit a string to the host/debugger/simulator */
 void System_WriteString(char * msg)
 {
-	PRINTF(msg);
+	uart_put_string(msg);
 }
 
 void System_WriteInt(int n)
 {
-	PRINTF("%d", n);
+	LOG_INTEGER(LOG_MODULE_UNIT_TEST, LOG_SEVERITY_TEST, n);
 }

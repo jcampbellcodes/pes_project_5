@@ -19,12 +19,11 @@
 struct mem_list_node
 {
 	circular_buf_t* data;
-	size_t size;
 	struct mem_list_node* next;
 };
 
 // sentinel struct, always has null data
-static struct mem_list_node memListHead = { NULL, 0, NULL };
+static struct mem_list_node memListHead = { NULL, NULL };
 
 bool bufferIsOwned(cbuf_handle_t inHandle)
 {
@@ -35,9 +34,7 @@ bool bufferIsOwned(cbuf_handle_t inHandle)
 		struct mem_list_node* iter = &memListHead;
 		while (iter)
 		{
-			ptrdiff_t distance = ABS(iter->data - buffer);
-			if(distance >= 0 &&
-			   distance <= iter->size)
+			if(iter->data == buffer)
 			{
 				return true;
 			}
@@ -65,6 +62,9 @@ cbuf_handle_t circular_buf_init(size_t inSize)
 	iter->next->data->write = 0;
 	iter->next->data->read = 0;
 	iter->next->data->full = false;
+
+	iter->next->next = NULL;
+
 	assert(circular_buf_empty(iter->next->data));
 	return iter->next->data;
 }
