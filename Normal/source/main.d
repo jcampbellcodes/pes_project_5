@@ -7,7 +7,8 @@ source/main.o source/main.d: ../source/main.c ../board/board.h \
  ../drivers/fsl_common.h ../drivers/fsl_gpio.h ../board/peripherals.h \
  ../board/pin_mux.h ../board/clock_config.h ../CMSIS/MKL25Z4.h \
  ../utilities/fsl_debug_console.h ../include/handle_led.h \
- ../include/led_types.h
+ ../include/led_types.h ../include/setup_teardown.h ../include/logger.h \
+ ../include/post.h ../include/delay.h ../include/uart.h
 
 ../board/board.h:
 
@@ -50,3 +51,13 @@ source/main.o source/main.d: ../source/main.c ../board/board.h \
 ../include/handle_led.h:
 
 ../include/led_types.h:
+
+../include/setup_teardown.h:
+
+../include/logger.h:
+
+../include/post.h:
+
+../include/delay.h:
+
+../include/uart.h:

@@ -15,6 +15,7 @@ void uart_init(int64_t baud_rate)
 	uint16_t sbr;
 	uint8_t temp;
 
+
 	// Enable clock gating for UART0 and Port A
 	SIM->SCGC4 |= SIM_SCGC4_UART0_MASK;
 	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
@@ -107,15 +108,19 @@ void uart_putchar (char ch)
     UART0->D = (uint8_t)ch;
 }
 
-char uart_getchar()
+bool uart_getchar(uint8_t* outChar)
 {
 	 //set_led(1, BLUE);
     /* Wait until character has been received */
-    while (!(UART0->S1 & UART0_S1_RDRF_MASK));
+    //while (!(UART0->S1 & UART0_S1_RDRF_MASK));
 
-    /* Return the 8-bit data from the receiver */
-    return UART0->D;
-
+	/* Return the 8-bit data from the receiver */
+	if((UART0->S1 & UART0_S1_RDRF_MASK))
+	{
+		*outChar = UART0->D;
+		return true;
+	}
+	return false;
 }
 
 // taken from DEAN
@@ -126,19 +131,26 @@ void uart_put_string(const char* str) {
 	}
 }
 
-void uart_echo()
+bool uart_echo(uint8_t* outChar)
 {
 #if USE_UART_INTERRUPTS
-	uint8_t outChar;
-	while(circular_buf_pop(sRxBuffer, &outChar) == buff_err_success)
+	if(circular_buf_pop(sRxBuffer, outChar) == buff_err_success)
 	{
-		circular_buf_push(sTxBuffer, outChar);
+		circular_buf_push(sTxBuffer, *outChar);
 		UART0->C2 |= UART0_C2_TIE_MASK;
+		return true;
 	}
 #else
-	uint8_t ch = uart_getchar();
-	uart_putchar(ch);
+	uint8_t ch;
+	if(uart_getchar(&ch))
+	{
+		*outChar = ch;
+		uart_putchar(ch);
+		return true;
+	}
+
 #endif
+	return false;
 }
 
 // UART0 IRQ Handler. Listing 8.12 on p. 235

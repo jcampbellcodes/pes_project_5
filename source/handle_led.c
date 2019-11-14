@@ -14,11 +14,33 @@
 
 #include <stdint.h>
 #include "handle_led.h"
-#include "board.h"
-#include "fsl_debug_console.h"
-#include "fsl_gpio.h"
 #include "MKL25Z4.h"
 #include "logger.h"
+
+#define RED_LED_POS (18U)   // on port B
+#define GREEN_LED_POS (19U)// on port B
+#define BLUE_LED_POS (1U)    // on port D
+#define MASK(x) (1UL << (x))
+
+void leds_init()
+{
+	// led init
+
+	// make 3 pins GPIO
+	PORTB->PCR[RED_LED_POS] &= ~PORT_PCR_MUX_MASK;
+	PORTB->PCR[RED_LED_POS] |= PORT_PCR_MUX(1);
+	PORTB->PCR[GREEN_LED_POS] &= ~PORT_PCR_MUX_MASK;
+	PORTB->PCR[GREEN_LED_POS] |= PORT_PCR_MUX(1);
+	PORTD->PCR[BLUE_LED_POS] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[BLUE_LED_POS] |= PORT_PCR_MUX(1);
+
+	// Set ports to outputs using the data direction register
+	PTB->PDDR |= MASK(RED_LED_POS) | MASK(GREEN_LED_POS);
+	PTD->PDDR |= MASK(BLUE_LED_POS);
+
+	PTB->PSOR = MASK(RED_LED_POS) | MASK(GREEN_LED_POS);
+	PTD->PSOR = MASK(BLUE_LED_POS);
+}
 
 /**
  * set_led
@@ -40,46 +62,47 @@ void set_led(uint8_t inValue, enum COLOR inColor)
 	{
 		case RED:
 		{
-			LED_BLUE_OFF();
-			LED_GREEN_OFF();
+			PTB->PSOR = MASK(GREEN_LED_POS);
+			PTD->PSOR = MASK(BLUE_LED_POS);
+
 			if(inValue)
 			{
-				LED_RED_ON();
+				PTB->PCOR = MASK(RED_LED_POS);
 			}
 			else
 			{
-				LED_RED_OFF();
+				PTB->PSOR = MASK(RED_LED_POS);
 			}
 
 			break;
 		}
 		case GREEN:
 		{
-			LED_BLUE_OFF();
-			LED_RED_OFF();
+			PTD->PSOR = MASK(BLUE_LED_POS);
+			PTB->PSOR = MASK(RED_LED_POS);
 
 			if(inValue)
 			{
-				LED_GREEN_ON();
+				PTB->PCOR = MASK(GREEN_LED_POS);
 			}
 			else
 			{
-				LED_GREEN_OFF();
+				PTB->PSOR = MASK(GREEN_LED_POS);
 			}
 			break;
 		}
 		case BLUE:
 		{
-			LED_GREEN_OFF();
-			LED_RED_OFF();
+			PTB->PSOR = MASK(GREEN_LED_POS);
+			PTB->PSOR = MASK(RED_LED_POS);
 
 			if(inValue)
 			{
-				LED_BLUE_ON();
+				PTD->PCOR = MASK(BLUE_LED_POS);
 			}
 			else
 			{
-				LED_BLUE_OFF();
+				PTD->PSOR = MASK(BLUE_LED_POS);
 			}
 			break;
 		}

@@ -5,7 +5,9 @@ source/setup_teardown.o source/setup_teardown.d: \
  ../CMSIS/cmsis_gcc.h ../CMSIS/core_cmFunc.h ../CMSIS/system_MKL25Z4.h \
  ../CMSIS/MKL25Z4_features.h ../drivers/fsl_clock.h \
  ../drivers/fsl_common.h ../drivers/fsl_gpio.h ../board/peripherals.h \
- ../board/clock_config.h ../board/pin_mux.h ../include/logger.h
+ ../board/clock_config.h ../board/pin_mux.h ../include/post.h \
+ ../include/logger.h ../include/uart.h ../CMSIS/MKL25Z4.h \
+ ../include/handle_led.h ../include/led_types.h
 
 ../board/board.h:
 
@@ -41,4 +43,14 @@ source/setup_teardown.o source/setup_teardown.d: \
 
 ../board/pin_mux.h:
 
+../include/post.h:
+
 ../include/logger.h:
+
+../include/uart.h:
+
+../CMSIS/MKL25Z4.h:
+
+../include/handle_led.h:
+
+../include/led_types.h:

@@ -8,14 +8,14 @@
 // LEVERAGED CODE dean: https://github.com/alexander-g-dean/ESF/tree/master/Code/Chapter_8/Serial-Demo
 
 
-#define USE_UART_INTERRUPTS 	(1) // 0 for polled UART communications, 1 for interrupt-driven
+#define USE_UART_INTERRUPTS 	(0) // 0 for polled UART communications, 1 for interrupt-driven
 #define UART_OVERSAMPLE_RATE 	(16)
 #define BUS_CLOCK 						(24e6)
 #define SYS_CLOCK							(48e6)
 
 void uart_init(int64_t baud_rate);
 
-char uart_getchar();
+bool uart_getchar(uint8_t* outChar);
 
 void uart_putchar(char ch);
 
@@ -25,6 +25,6 @@ int uart_num_chars_available();
 
 void uart_put_string(const char* inChar);
 
-void uart_echo();
+bool uart_echo(uint8_t* outChar);
 
 #endif

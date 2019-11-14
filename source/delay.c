@@ -14,7 +14,8 @@
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
  */
 #include "delay.h"
-#include "fsl_debug_console.h"
+#include "time.h"
+
 
 /* GLOBALS */
 const uint64_t CLOCKS_PER_MILLISECOND = 2600UL;
@@ -27,10 +28,7 @@ const uint64_t CLOCKS_PER_MILLISECOND = 2600UL;
  */
 void delay(uint64_t inDelayMs)
 {
-	volatile uint64_t number = inDelayMs * CLOCKS_PER_MILLISECOND;
-
-	while(number--)
-	{
-		__asm volatile ("nop");
-	}
+	uint64_t now = time_now();
+	while(time_passed(now) < inDelayMs)
+	{}
 }

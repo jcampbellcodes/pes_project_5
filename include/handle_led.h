@@ -20,6 +20,9 @@
 #include <stdint.h>
 #include "led_types.h"
 
+
+void leds_init();
+
 /**
  * set_led
  *

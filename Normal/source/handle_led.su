@@ -1,1 +1,2 @@
-handle_led.c:31:6:set_led	0	static
+handle_led.c:25:6:leds_init	8	static
+handle_led.c:54:6:set_led	24	static

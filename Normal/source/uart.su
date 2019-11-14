@@ -1,0 +1,8 @@
+uart.c:13:6:uart_init	24	static
+uart.c:93:6:uart_putchar_space_available	0	static
+uart.c:99:6:uart_getchar_present	0	static
+uart.c:105:6:uart_putchar	0	static
+uart.c:115:6:uart_getchar	0	static
+uart.c:127:6:uart_put_string	8	static
+uart.c:134:6:uart_echo	8	static
+uart.c:150:6:UART0_IRQHandler	24	static

@@ -16,32 +16,34 @@
 #include "peripherals.h"
 #include "clock_config.h"
 #include "pin_mux.h"
+
+
+
 #include "post.h"
 #include "logger.h"
-#include "stdlib.h"
-#include "MKL25Z4.h"
+#include <stdlib.h>
 #include "uart.h"
+#include "handle_led.h"
+#include "time.h"
+
+#include "MKL25Z4.h"
 
 #define UART_BAUD_RATE 115200
-//#define UART_BAUD_RATE 9600
-//#define UART_BAUD_RATE 38400
-//#define UART_BAUD_RATE 115200
 
 void initialize()
 {
-  	/* Init board hardware. */
-    BOARD_InitBootPins();
     BOARD_InitBootClocks();
 
-	/* led setup */
-	LED_RED_INIT(1);
-	LED_BLUE_INIT(1);
-	LED_GREEN_INIT(1);
+  	/* Init board hardware. */
+	 /* Enable all of the port clocks. */
+	SIM->SCGC5 |= (SIM_SCGC5_PORTA_MASK
+			   | SIM_SCGC5_PORTB_MASK
+			   | SIM_SCGC5_PORTC_MASK
+			   | SIM_SCGC5_PORTD_MASK
+			   | SIM_SCGC5_PORTE_MASK );
 
-	LED_BLUE_OFF();
-	LED_GREEN_OFF();
-	LED_RED_OFF();
-
+	time_init();
+    leds_init();
 	uart_init(UART_BAUD_RATE);
 
 #ifdef DEBUG
@@ -49,7 +51,7 @@ void initialize()
 	log_enable(LOG_SEVERITY_TEST);
 	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program start");
 #else
-	log_enable(SEVERITY_STATUS);
+	log_enable(LOG_SEVERITY_STATUS);
 #endif
 
 	if(!power_on_self_test())
