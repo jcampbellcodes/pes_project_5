@@ -1,8 +1,8 @@
-logger.c:62:13:PRINT_TIME_STAMP	88	static
-logger.c:82:13:PRINT_LOG_PREFIX	40	static
-logger.c:103:6:log_enable	16	static
-logger.c:109:6:log_disable	8	static
-logger.c:114:6:log_enabled	8	static
-logger.c:119:6:log_data	32	static
-logger.c:144:6:log_string	28	static
-logger.c:163:6:log_integer	32	static
+logger.c:62:13:PRINT_TIME_STAMP	64	static
+logger.c:88:13:PRINT_LOG_PREFIX	40	static
+logger.c:109:6:log_enable	16	static
+logger.c:115:6:log_disable	8	static
+logger.c:120:6:log_enabled	8	static
+logger.c:125:6:log_data	32	static
+logger.c:150:6:log_string	28	static
+logger.c:169:6:log_integer	32	static

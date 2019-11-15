@@ -66,13 +66,19 @@ static void PRINT_TIME_STAMP()
 
 	uint64_t tenths_seconds = time_now();
 
-	float now = tenths_seconds * 10;
+	float now = tenths_seconds / 10;
 
-	uint64_t hours = (uint64_t)(now/3600);
-	uint64_t minutes = (60*(now/3600.0) - (uint64_t)(now/3600));
-	uint64_t seconds = (now - 60*(uint64_t)(now/60));
+	uint64_t hours = (uint64_t)(now/3600)%60;
+	uint64_t minutes = (uint64_t)(now/60)%60;
+	uint64_t seconds = (uint64_t)(now)%60;
 
-	sprintf(format_buf, "%02d:%02d:%02d ",  hours, minutes, seconds);
+	sprintf(format_buf, "%02d:",  hours);
+	uart_put_string(format_buf);
+	sprintf(format_buf, "%02d:",  minutes);
+	uart_put_string(format_buf);
+	sprintf(format_buf, "%02d",  seconds);
+	uart_put_string(format_buf);
+	sprintf(format_buf, ".%1d ",  tenths_seconds%10);
 	uart_put_string(format_buf);
 }
 
