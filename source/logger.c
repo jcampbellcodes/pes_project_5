@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-//#include "fsl_debug_console.h"
+#include "time.h"
 #include "uart.h"
 
 /**
@@ -45,16 +45,36 @@ static const char* sLogSeverityStrings[NUM_LOG_SEVERITIES] =
  */
 static const char* sLogModuleStrings[NUM_LOG_MODULES] =
 {
-	"MAIN",
-	"LED",
-	"UNIT_TEST",
-	"SETUP_TEARDOWN",
-	"STATE_MACHINE_STATE",
-	"STATE_MACHINE_TABLE",
-	"POST",
-	"TMP102",
-	"I2C"
+		"MAIN",
+		"LED",
+		"UNIT_TEST",
+		"SETUP_TEARDOWN",
+		"CIRCULAR_BUFFER",
+		"TIME",
+		"POST",
+        "UART"
 };
+// seconds is numSeconds - 60*floor(numSeconds/60)
+// minutes is
+// numSeconds == System Ticks * 10
+// (int(numSeconds/3600), int(60*((numSeconds/3600) - int(numSeconds/3600))), (numSeconds - 60*floor(numSeconds/60)))
+
+static void PRINT_TIME_STAMP()
+{
+	static char format_buf[ARRLEN] = {0};
+	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
+
+	uint64_t tenths_seconds = time_now();
+
+	float now = tenths_seconds * 10;
+
+	uint64_t hours = (uint64_t)(now/3600);
+	uint64_t minutes = (60*(now/3600.0) - (uint64_t)(now/3600));
+	uint64_t seconds = (now - 60*(uint64_t)(now/60));
+
+	sprintf(format_buf, "%02d:%02d:%02d ",  hours, minutes, seconds);
+	uart_put_string(format_buf);
+}
 
 /**
  * @brief Used to standardize the prefix before log messages.
@@ -64,7 +84,9 @@ static void PRINT_LOG_PREFIX(LogModule_t inModule, const char* inFuncName, LogSe
 	static char format_buf[ARRLEN] = {0};
 	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
 
-	sprintf(format_buf, "\n\n%s -> %s::[%s] : ",  sLogSeverityStrings[inSeverity] , sLogModuleStrings[inModule], inFuncName);
+	uart_put_string("\n\r");
+	sprintf(format_buf, "%s -> %s::[%s] : ",  sLogSeverityStrings[inSeverity] , sLogModuleStrings[inModule], inFuncName);
+	PRINT_TIME_STAMP();
 	uart_put_string(format_buf);
 }
 

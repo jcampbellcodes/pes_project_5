@@ -43,7 +43,7 @@ static struct CharCounts_t sCharCounts = {{0}};
  */
 #define ARRLEN 2048
 
-#define REPORT_TIMER 500
+#define REPORT_TIMER 20
 
 static char format_buf[ARRLEN] = {0};
 

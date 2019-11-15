@@ -8,7 +8,7 @@
 // LEVERAGED CODE dean: https://github.com/alexander-g-dean/ESF/tree/master/Code/Chapter_8/Serial-Demo
 
 
-#define USE_UART_INTERRUPTS 	(0) // 0 for polled UART communications, 1 for interrupt-driven
+#define USE_UART_INTERRUPTS 	(1) // 0 for polled UART communications, 1 for interrupt-driven
 #define UART_OVERSAMPLE_RATE 	(16)
 #define BUS_CLOCK 						(24e6)
 #define SYS_CLOCK							(48e6)

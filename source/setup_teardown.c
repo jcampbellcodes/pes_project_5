@@ -42,12 +42,12 @@ void initialize()
 			   | SIM_SCGC5_PORTD_MASK
 			   | SIM_SCGC5_PORTE_MASK );
 
+
+	uart_init(UART_BAUD_RATE);
 	time_init();
     leds_init();
-	uart_init(UART_BAUD_RATE);
 
 #ifdef DEBUG
-	//BOARD_InitDebugConsole();
 	log_enable(LOG_SEVERITY_TEST);
 	LOG_STRING(LOG_MODULE_SETUP_TEARDOWN, LOG_SEVERITY_DEBUG, "program start");
 #else

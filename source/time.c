@@ -1,11 +1,12 @@
 #include "MKL25Z4.h"
 
+// milliseconds
 static uint64_t gSystemTime = 0;
 static const uint64_t gTimeMax = ~0;
 
 void time_init()
 {
-	SysTick->LOAD = (40000000L/1000);
+	SysTick->LOAD = 48000000UL/100;
 
 	NVIC_SetPriority(SysTick_IRQn, 3); // 0, 1, 2, or 3
 	NVIC_ClearPendingIRQ(SysTick_IRQn);
