@@ -25,10 +25,21 @@ bool power_on_self_test()
 	LOG_STRING( LOG_MODULE_POST, LOG_SEVERITY_DEBUG, "Starting power-on self test." );
 
 	// Check delays and LED timing
+	LOG_STRING(LOG_MODULE_POST,
+			LOG_SEVERITY_DEBUG,
+			"LED RED ON");
     set_led(1, RED);
     delay(10);
+
+	LOG_STRING(LOG_MODULE_POST,
+			LOG_SEVERITY_DEBUG,
+			"LED GREEN ON");
     set_led(1, GREEN);
     delay(10);
+
+	LOG_STRING(LOG_MODULE_POST,
+			LOG_SEVERITY_DEBUG,
+			"LED BLUE ON");
     set_led(1, BLUE);
     delay(10);
 

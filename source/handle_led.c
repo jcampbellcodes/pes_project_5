@@ -40,6 +40,8 @@
  */
 #define MASK(x) (1UL << (x))
 
+static uint8_t gLedReady = 0;
+
 void leds_init()
 {
 	// led init
@@ -58,6 +60,8 @@ void leds_init()
 
 	PTB->PSOR = MASK(RED_LED_POS) | MASK(GREEN_LED_POS);
 	PTD->PSOR = MASK(BLUE_LED_POS);
+
+	gLedReady = 1;
 }
 
 /**
@@ -71,60 +75,58 @@ void leds_init()
  */
 void set_led(uint8_t inValue, enum COLOR inColor)
 {
-	LOG_STRING_ARGS(LOG_MODULE_LED,
-			LOG_SEVERITY_TEST,
-			"LED %s %s", COLOR_STRINGS[inColor],
-			inValue ? "ON" : "OFF");
-
-	switch(inColor)
+	if(gLedReady)
 	{
-		case RED:
+		switch(inColor)
 		{
-			PTB->PSOR = MASK(GREEN_LED_POS);
-			PTD->PSOR = MASK(BLUE_LED_POS);
-
-			if(inValue)
-			{
-				PTB->PCOR = MASK(RED_LED_POS);
-			}
-			else
-			{
-				PTB->PSOR = MASK(RED_LED_POS);
-			}
-
-			break;
-		}
-		case GREEN:
-		{
-			PTD->PSOR = MASK(BLUE_LED_POS);
-			PTB->PSOR = MASK(RED_LED_POS);
-
-			if(inValue)
-			{
-				PTB->PCOR = MASK(GREEN_LED_POS);
-			}
-			else
+			case RED:
 			{
 				PTB->PSOR = MASK(GREEN_LED_POS);
-			}
-			break;
-		}
-		case BLUE:
-		{
-			PTB->PSOR = MASK(GREEN_LED_POS);
-			PTB->PSOR = MASK(RED_LED_POS);
+				PTD->PSOR = MASK(BLUE_LED_POS);
 
-			if(inValue)
-			{
-				PTD->PCOR = MASK(BLUE_LED_POS);
+				if(inValue)
+				{
+					PTB->PCOR = MASK(RED_LED_POS);
+				}
+				else
+				{
+					PTB->PSOR = MASK(RED_LED_POS);
+				}
+
+				break;
 			}
-			else
+			case GREEN:
 			{
 				PTD->PSOR = MASK(BLUE_LED_POS);
+				PTB->PSOR = MASK(RED_LED_POS);
+
+				if(inValue)
+				{
+					PTB->PCOR = MASK(GREEN_LED_POS);
+				}
+				else
+				{
+					PTB->PSOR = MASK(GREEN_LED_POS);
+				}
+				break;
 			}
-			break;
+			case BLUE:
+			{
+				PTB->PSOR = MASK(GREEN_LED_POS);
+				PTB->PSOR = MASK(RED_LED_POS);
+
+				if(inValue)
+				{
+					PTD->PCOR = MASK(BLUE_LED_POS);
+				}
+				else
+				{
+					PTD->PSOR = MASK(BLUE_LED_POS);
+				}
+				break;
+			}
+			default:
+				 break;
 		}
-		default:
-			 break;
 	}
 }

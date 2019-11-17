@@ -24,7 +24,7 @@
 /**
  * @brief Whether to use polling or interrupts for UART communication
  */
-#define USE_UART_INTERRUPTS 	(1) // 0 for polled UART communications, 1 for interrupt-driven
+#define USE_UART_INTERRUPTS 	(0) // 0 for polled UART communications, 1 for interrupt-driven
 
 /**
  * @brief How much to oversample the uart clock
