@@ -102,6 +102,33 @@ void circular_buf_free(cbuf_handle_t inBufHandle)
 	}
 }
 
+buff_err circular_buf_resize(cbuf_handle_t* inOutBufHandle, size_t inSize)
+{
+	if(inOutBufHandle &&
+	   bufferIsOwned(*inOutBufHandle) &&
+	   inSize > circular_buf_size(*inOutBufHandle))
+	{
+		// create new buffer
+		cbuf_handle_t newBuf = circular_buf_init(inSize);
+
+		// copy contents from old buffer
+		uint8_t ch;
+		while(circular_buf_pop(*inOutBufHandle, &ch) == buff_err_success)
+		{
+			circular_buf_push(newBuf, ch);
+		}
+
+		// free old buffer
+		circular_buf_free(*inOutBufHandle);
+
+		// set output buffer
+		*inOutBufHandle = newBuf;
+
+		return buff_err_success;
+	}
+	return buff_err_invalid;
+}
+
 /// Put Version 2 rejects new data if the buffer is full
 /// Returns 0 on success, -1 if buffer is full
 buff_err circular_buf_push(cbuf_handle_t inBufHandle, uint8_t inData)
@@ -124,6 +151,39 @@ buff_err circular_buf_push(cbuf_handle_t inBufHandle, uint8_t inData)
 		err = buff_err_success;
 
 	}
+	return err;
+}
+
+buff_err circular_buf_push_resize(cbuf_handle_t* inOutBufHandle, uint8_t inData)
+{
+	buff_err err = buff_err_invalid;
+	if(inOutBufHandle)
+	{
+		cbuf_handle_t inBufHandle = *inOutBufHandle;
+
+		if(bufferIsOwned(inBufHandle))
+		{
+			if(circular_buf_full(inBufHandle))
+			{
+				if(circular_buf_resize(inOutBufHandle, inBufHandle->max * 2) == buff_err_success)
+				    inBufHandle = *inOutBufHandle;
+				else
+					return err;
+			}
+
+			inBufHandle->buffer[inBufHandle->write] = inData;
+			if(inBufHandle->full)
+			{
+				inBufHandle->read = (inBufHandle->read + 1) % inBufHandle->max;
+			}
+
+			inBufHandle->write = (inBufHandle->write + 1) % inBufHandle->max;
+			inBufHandle->full = (inBufHandle->write == inBufHandle->read);
+			err = buff_err_success;
+
+		}
+	}
+
 	return err;
 }
 

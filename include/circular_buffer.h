@@ -50,9 +50,13 @@ cbuf_handle_t circular_buf_init(size_t inSize);
 /// Does not free data buffer; owner is responsible for that
 void circular_buf_free(cbuf_handle_t inBufHandle);
 
+buff_err circular_buf_resize(cbuf_handle_t* outBufHandle, size_t inSize);
+
 /// Put Version 2 rejects new data if the buffer is full
 /// Returns 0 on success, -1 if buffer is full
 buff_err circular_buf_push(cbuf_handle_t inBufHandle, uint8_t inData);
+
+buff_err circular_buf_push_resize(cbuf_handle_t* inOutBufHandle, uint8_t inData);
 
 /// Retrieve a value from the buffer
 /// Returns 0 on success, -1 if the buffer is empty

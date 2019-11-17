@@ -8,13 +8,16 @@
 static cbuf_handle_t sTxBuffer = NULL;
 static cbuf_handle_t sRxBuffer = NULL;
 
+#define ENABLE_IRQ NVIC_EnableIRQ(UART0_IRQn);
+
+#define DISABLE_IRQ NVIC_DisableIRQ(UART0_IRQn);
+
 void uart_init(int64_t baud_rate)
 {
 	 //set_led(1, BLUE);
 
 	uint16_t sbr;
 	uint8_t temp;
-
 
 	// Enable clock gating for UART0 and Port A
 	SIM->SCGC4 |= SIM_SCGC4_UART0_MASK;
@@ -64,7 +67,7 @@ void uart_init(int64_t baud_rate)
 
 	NVIC_SetPriority(UART0_IRQn, 2); // 0, 1, 2, or 3
 	NVIC_ClearPendingIRQ(UART0_IRQn);
-	NVIC_EnableIRQ(UART0_IRQn);
+	ENABLE_IRQ
 
 	// Enable receive interrupts but not transmit interrupts yet
 	// also turn on error interrupts
@@ -155,6 +158,8 @@ bool uart_echo(uint8_t* outChar)
 
 // UART0 IRQ Handler. Listing 8.12 on p. 235
 void UART0_IRQHandler(void) {
+	DISABLE_IRQ
+
 	uint8_t ch;
 
 	// error handling
@@ -208,6 +213,8 @@ void UART0_IRQHandler(void) {
 		}
 		 //set_led(1, GREEN);
 	}
+
+	ENABLE_IRQ
 }
 
 

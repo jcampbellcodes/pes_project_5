@@ -29,7 +29,7 @@
 #include "time.h"
 #include "circular_buffer.h"
 
-//#define ECHO_MODE
+#define ECHO_MODE
 
 struct CharCounts_t
 {
@@ -38,14 +38,18 @@ struct CharCounts_t
 
 static struct CharCounts_t sCharCounts = {{0}};
 
+
+
+#define REPORT_TIMER 17
+
+#ifndef ECHO_MODE
 /**
  * Used as a size for static char arrays.
  */
 #define ARRLEN 2048
 
-#define REPORT_TIMER 17
-
 static char format_buf[ARRLEN] = {0};
+#endif
 
 int main(void) {
 

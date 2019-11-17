@@ -143,6 +143,20 @@ int main()
 		UCUNIT_TestcaseEnd();
 	}
 
+	// test that destructive overload resizes buffer when it is full
+	{
+		UCUNIT_TestcaseBegin("Overfill resize");
+	    cbuf_handle_t buf = circular_buf_init(TEST_BUF_SIZE);
+	    for(int i = 0; i < TEST_BUF_SIZE; i++)
+	    {
+	    	UCUNIT_CheckIsEqual(circular_buf_push_resize(&buf, 0xAA), buff_err_success);
+	    }
+	    UCUNIT_CheckIsEqual(circular_buf_push_resize(&buf, 0xAA), buff_err_success);
+	    UCUNIT_CheckIsEqual(buf->max, TEST_BUF_SIZE * 2);
+	    circular_buf_free(buf);
+		UCUNIT_TestcaseEnd();
+	}
+
 	// test that your buffer fails to remove an item when empty
 	{
 		UCUNIT_TestcaseBegin("Over empty");
@@ -152,6 +166,29 @@ int main()
 	    UCUNIT_CheckIsEqual(circular_buf_pop(buf, &outbyte), buff_err_success);
 	    UCUNIT_CheckIsEqual(outbyte, 0xAA);
 	    UCUNIT_CheckIsEqual(circular_buf_pop(buf, &outbyte), buff_err_empty);
+	    circular_buf_free(buf);
+		UCUNIT_TestcaseEnd();
+	}
+
+
+	{
+		UCUNIT_TestcaseBegin("Resize buffer");
+	    cbuf_handle_t buf = circular_buf_init(TEST_BUF_SIZE);
+	    for(int i = 0; i < TEST_BUF_SIZE; i++)
+	    {
+	    	UCUNIT_CheckIsEqual(circular_buf_push(buf, 0xAA), buff_err_success);
+	    }
+
+	    circular_buf_resize(&buf, TEST_BUF_SIZE*2);
+	    UCUNIT_CheckIsEqual(buf->max, TEST_BUF_SIZE * 2);
+
+	    uint8_t ch;
+	    for(int i = 0; i < TEST_BUF_SIZE; i++)
+	    {
+	    	UCUNIT_CheckIsEqual(circular_buf_pop(buf, &ch), buff_err_success);
+	    	UCUNIT_CheckIsEqual(ch, 0xAA);
+	    }
+
 	    circular_buf_free(buf);
 		UCUNIT_TestcaseEnd();
 	}
