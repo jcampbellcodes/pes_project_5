@@ -28,7 +28,7 @@
 /**
  * Used as a size for static char arrays.
  */
-#define ARRLEN 2048
+#define ARRLEN 900
 
 /**
  * @brief Strings associated with severities.
@@ -61,7 +61,6 @@ static const char* sLogModuleStrings[NUM_LOG_MODULES] =
 static void PRINT_TIME_STAMP()
 {
 	static char format_buf[ARRLEN] = {0};
-	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
 
 	uint64_t tenths_seconds = time_now();
 
@@ -87,7 +86,6 @@ static void PRINT_TIME_STAMP()
 static void PRINT_LOG_PREFIX(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity)
 {
 	static char format_buf[ARRLEN] = {0};
-	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
 
 	uart_put_string("\n\r");
 	sprintf(format_buf, "%s -> %s::[%s] : ",  sLogSeverityStrings[inSeverity] , sLogModuleStrings[inModule], inFuncName);
@@ -124,7 +122,6 @@ bool log_enabled()
 void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const uint8_t* inBytes, size_t inSize)
 {
 	static char format_buf[ARRLEN] = {0};
-	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
 
 	if (sLoggingEnabled && inSeverity >= sLogSeverity)
 	{
@@ -149,7 +146,6 @@ void log_data(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeve
 void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, const char* inString, ...)
 {
 	static char format_buf[ARRLEN] = {0};
-	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
 
 	if (sLoggingEnabled && inSeverity >= sLogSeverity) {
 
@@ -168,7 +164,6 @@ void log_string(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSe
 void log_integer(LogModule_t inModule, const char* inFuncName, LogSeverity_t inSeverity, uint64_t inNum)
 {
 	static char format_buf[ARRLEN] = {0};
-	for(int i = 0; i < ARRLEN; i++) format_buf[i] = '\0';
 
 	if (sLoggingEnabled && inSeverity >= sLogSeverity)
 	{
