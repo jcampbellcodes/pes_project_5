@@ -19,7 +19,7 @@
 #include <stdbool.h>
 
 /**
- * @brief Power on self test that checks for connection with TMP102.
+ * @brief Power on self test that checks for connection with peripherals and board functions.
  * @return Whether the test succeeded.
  */
 bool power_on_self_test();

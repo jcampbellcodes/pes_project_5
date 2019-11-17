@@ -2,12 +2,28 @@
 Jack Campbell
 
 ## Description
-This repo contains custom sources and makefiles for Project 4 as well as adapted and generated code 
+This repo contains custom sources and makefiles for Project 5 as well as adapted and generated code 
 from MCUXpresso and the KL25Z SDK.
 
 This project contains three configurations: Test, Debug, and Normal.
 
-Test runs a suite of unit tests covering the state machine code.
+I use the ECHO_MODE and USE_UART_INTERRUPTS to decided between polling/interrupt UART functions
+and APPLICATION vs ECHO mode for the main function.
+
+Test runs a suite of unit tests covering the circular buffer functions.
+
+I also did the extra credit for this assignment with the resizing circular buffers.
+
+I included 2 different versions of the circular buffer push, one that errors when the buffer is full
+and one that resizes.
+
+## Observations
+
+This project went smoother than the I2C one, though I did use more leveraged code for the circular buffer
+and UART code. Connecting between the PC and the KL25Z seemed to be more reliable than the KL25Z and 
+the TMP102, which may or may not have been verified to work.
+
+Switching to not use the SDK was a good exercise, since it forced me to interact with all the registers directly.
 
 ## Installation/Execution Notes
 

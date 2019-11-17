@@ -14,7 +14,7 @@ static cbuf_handle_t sRxBuffer = NULL;
 
 void uart_init(int64_t baud_rate)
 {
-	 //set_led(1, BLUE);
+	 set_led(1, BLUE);
 
 	uint16_t sbr;
 	uint8_t temp;
@@ -91,19 +91,19 @@ void uart_init(int64_t baud_rate)
 
 bool uart_putchar_space_available ()
 {
-	//set_led(1, GREEN);
+	set_led(1, GREEN);
     return (UART0->S1 & UART0_S1_TDRE_MASK);
 }
 
 bool uart_getchar_present ()
 {
-	//set_led(1, BLUE);
+	set_led(1, BLUE);
     return (UART0->S1 & UART0_S1_RDRF_MASK);
 }
 
 void uart_putchar (char ch)
 {
-	 //set_led(1, GREEN);
+	 set_led(1, GREEN);
     /* Wait until space is available in the FIFO */
     while(!(UART0->S1 & UART0_S1_TDRE_MASK));
 
@@ -113,9 +113,7 @@ void uart_putchar (char ch)
 
 bool uart_getchar(uint8_t* outChar)
 {
-	 //set_led(1, BLUE);
-    /* Wait until character has been received */
-    //while (!(UART0->S1 & UART0_S1_RDRF_MASK));
+	 set_led(1, BLUE);
 
 	/* Return the 8-bit data from the receiver */
 	if((UART0->S1 & UART0_S1_RDRF_MASK))
@@ -139,7 +137,7 @@ bool uart_echo(uint8_t* outChar)
 #if USE_UART_INTERRUPTS
 	if(circular_buf_pop(sRxBuffer, outChar) == buff_err_success)
 	{
-		circular_buf_push(sTxBuffer, *outChar);
+		circular_buf_push_resize(&sTxBuffer, *outChar);
 		UART0->C2 |= UART0_C2_TIE_MASK;
 		return true;
 	}
@@ -172,7 +170,7 @@ void UART0_IRQHandler(void) {
 			// read the data register to clear RDRF
 			ch = UART0->D;
 
-			 //set_led(1, RED);
+			 set_led(1, RED);
 	}
 
 	// received a character
@@ -182,7 +180,7 @@ void UART0_IRQHandler(void) {
 		ch = UART0->D;
 		if (!circular_buf_full(sRxBuffer))
 		{
-			circular_buf_push(sRxBuffer, ch);
+			circular_buf_push_resize(&sRxBuffer, ch);
 		}
 		else
 		{
@@ -190,7 +188,7 @@ void UART0_IRQHandler(void) {
 			// discard character
 		}
 
-		 //set_led(1, BLUE);
+		 set_led(1, BLUE);
 	}
 
 	// transmitter interrupt enabled and tx buffer empty
@@ -211,7 +209,7 @@ void UART0_IRQHandler(void) {
 			// queue is empty so disable transmitter interrupt
 			UART0->C2 &= ~UART0_C2_TIE_MASK;
 		}
-		 //set_led(1, GREEN);
+		 set_led(1, GREEN);
 	}
 
 	ENABLE_IRQ

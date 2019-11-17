@@ -54,10 +54,6 @@ static const char* sLogModuleStrings[NUM_LOG_MODULES] =
 		"POST",
         "UART"
 };
-// seconds is numSeconds - 60*floor(numSeconds/60)
-// minutes is
-// numSeconds == System Ticks * 10
-// (int(numSeconds/3600), int(60*((numSeconds/3600) - int(numSeconds/3600))), (numSeconds - 60*floor(numSeconds/60)))
 
 static void PRINT_TIME_STAMP()
 {
