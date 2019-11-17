@@ -1,6 +1,6 @@
 /*
  * @file led_types.h
- * @brief Project 4
+ * @brief Project 5
  *
  * @details Defines enumerations and constants used to describe colors and
  *          on/off states for LEDs.

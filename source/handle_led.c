@@ -1,6 +1,6 @@
 /*
  * @file handle_led.c
- * @brief Project 4
+ * @brief Project 5
  *
  * Functions for handling the state of an LED.
  *
@@ -10,6 +10,9 @@
  *         ARM Compiler: GNU gcc version 8.2.1 20181213
  *         ARM Linker: GNU ld 2.31.51.20181213
  *         ARM Debugger: GNU gdb 8.2.50.20181213-git
+ *
+ *  LEVERAGED CODE from the in-class competition activity
+ *  for LEDs.
  */
 
 #include <stdint.h>
@@ -17,9 +20,24 @@
 #include "MKL25Z4.h"
 #include "logger.h"
 
+/**
+ * @brief The RED LED pin
+ */
 #define RED_LED_POS (18U)   // on port B
+
+/**
+ * @brief The GREEN LED pin
+ */
 #define GREEN_LED_POS (19U)// on port B
+
+/**
+ * @brief The BLUE LED pin
+ */
 #define BLUE_LED_POS (1U)    // on port D
+
+/**
+ * @brief Set a bit at a specific position
+ */
 #define MASK(x) (1UL << (x))
 
 void leds_init()

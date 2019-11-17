@@ -13,6 +13,7 @@ C_SRCS += \
 ../source/post.c \
 ../source/semihost_hardfault.c \
 ../source/setup_teardown.c \
+../source/time.c \
 ../source/uart.c 
 
 OBJS += \
@@ -25,6 +26,7 @@ OBJS += \
 ./source/post.o \
 ./source/semihost_hardfault.o \
 ./source/setup_teardown.o \
+./source/time.o \
 ./source/uart.o 
 
 C_DEPS += \
@@ -37,6 +39,7 @@ C_DEPS += \
 ./source/post.d \
 ./source/semihost_hardfault.d \
 ./source/setup_teardown.d \
+./source/time.d \
 ./source/uart.d 
 
 

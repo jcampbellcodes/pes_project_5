@@ -1,6 +1,6 @@
 /*
  * @file logger.h
- * @brief Project 4
+ * @brief Project 5
  *
  * Interface to use for logging on either PC or KL25Z.
  *

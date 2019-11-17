@@ -1,3 +1,20 @@
+/*
+ * @file circular_buffer.c
+ * @brief Project 5
+ *
+ * @details This file contains code for a circular buffer.
+ *
+ * @author Jack Campbell
+ * @tools  PC Compiler: GNU gcc 8.3.0
+ *         PC Linker: GNU ld 2.32
+ *         PC Debugger: GNU gdb 8.2.91.20190405-git
+ *         ARM Compiler: GNU gcc version 8.2.1 20181213
+ *         ARM Linker: GNU ld 2.31.51.20181213
+ *         ARM Debugger: GNU gdb 8.2.50.20181213-git
+ *
+ *  LEVERAGED API AND IMPLEMENTATION FROM:
+ *  https://embeddedartistry.com/blog/2017/05/17/creating-a-circular-buffer-in-c-and-c/
+ */
 
 #include <stdint.h>
 #include <stddef.h>
@@ -16,7 +33,9 @@
  */
 #define ABS(x) ((x)>0?(x):-(x))
 
-// linked list
+/**
+ * @brief List node for keeping track of owned buffers
+ */
 struct mem_list_node
 {
 	circular_buf_t* data;
@@ -27,6 +46,11 @@ struct mem_list_node
 // sentinel struct, always has null data
 static struct mem_list_node memListHead = { NULL, 0, NULL };
 
+/**
+ * @brief Whether the given handle is owned currently or null or garbage.
+ * @param inHandle Handle to check.
+ * @return
+ */
 bool bufferIsOwned(cbuf_handle_t inHandle)
 {
 	circular_buf_t* buffer = (circular_buf_t*)inHandle;
@@ -46,8 +70,6 @@ bool bufferIsOwned(cbuf_handle_t inHandle)
 	return false;
 }
 
-/// Pass in a storage buffer and size
-/// Returns a circular buffer handle
 cbuf_handle_t circular_buf_init(size_t inSize)
 {
 	assert(inSize);
@@ -77,8 +99,6 @@ cbuf_handle_t circular_buf_init(size_t inSize)
 	return iter->next->data;
 }
 
-/// Free a circular buffer structure.
-/// Does not free data buffer; owner is responsible for that
 void circular_buf_free(cbuf_handle_t inBufHandle)
 {
 	circular_buf_t* buffer = (circular_buf_t*)inBufHandle;
@@ -129,8 +149,6 @@ buff_err circular_buf_resize(cbuf_handle_t* inOutBufHandle, size_t inSize)
 	return buff_err_invalid;
 }
 
-/// Put Version 2 rejects new data if the buffer is full
-/// Returns 0 on success, -1 if buffer is full
 buff_err circular_buf_push(cbuf_handle_t inBufHandle, uint8_t inData)
 {
 	buff_err err = buff_err_invalid;
@@ -187,8 +205,6 @@ buff_err circular_buf_push_resize(cbuf_handle_t* inOutBufHandle, uint8_t inData)
 	return err;
 }
 
-/// Retrieve a value from the buffer
-/// Returns 0 on success, -1 if the buffer is empty
 buff_err circular_buf_pop(cbuf_handle_t inBufHandle, uint8_t * outData)
 {
 	buff_err err = buff_err_invalid;
@@ -205,28 +221,24 @@ buff_err circular_buf_pop(cbuf_handle_t inBufHandle, uint8_t * outData)
 	return err;
 }
 
-/// Returns true if the buffer is empty
 bool circular_buf_empty(cbuf_handle_t inBufHandle)
 {
 	assert(bufferIsOwned(inBufHandle));
     return (!inBufHandle->full && (inBufHandle->write == inBufHandle->read));
 }
 
-/// Returns true if the buffer is full
 bool circular_buf_full(cbuf_handle_t inBufHandle)
 {
 	assert(bufferIsOwned(inBufHandle));
     return inBufHandle->full;
 }
 
-/// Returns the maximum capacity of the buffer
 size_t circular_buf_capacity(cbuf_handle_t inBufHandle)
 {
 	assert(bufferIsOwned(inBufHandle));
 	return inBufHandle->max;
 }
 
-/// Returns the current number of elements in the buffer
 size_t circular_buf_size(cbuf_handle_t inBufHandle)
 {
 	assert(bufferIsOwned(inBufHandle));

@@ -1,3 +1,19 @@
+/*
+ * @file uart.c
+ * @brief Project 5
+ *
+ * @details Contains interface for UART communications.
+ *
+ * @tools  PC Compiler: GNU gcc 8.3.0
+ *         PC Linker: GNU ld 2.32
+ *         PC Debugger: GNU gdb 8.2.91.20190405-git
+ *         ARM Compiler: GNU gcc version 8.2.1 20181213
+ *         ARM Linker: GNU ld 2.31.51.20181213
+ *         ARM Debugger: GNU gdb 8.2.50.20181213-git
+ *  LEVERAGED CODE:
+ *  https://github.com/alexander-g-dean/ESF/tree/master/Code/Chapter_8/Serial-Demo
+ */
+
 #include "uart.h"
 #include "handle_led.h"
 #include "circular_buffer.h"

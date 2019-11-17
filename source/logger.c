@@ -55,6 +55,9 @@ static const char* sLogModuleStrings[NUM_LOG_MODULES] =
         "UART"
 };
 
+/**
+ * @brief Prints the current time stamp in HH:MM:SS.n format
+ */
 static void PRINT_TIME_STAMP()
 {
 	static char format_buf[ARRLEN] = {0};

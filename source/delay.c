@@ -1,6 +1,6 @@
 /*
  * @file delay.c
- * @brief Project 4
+ * @brief Project 5
  *
  * @details This file contains prototypes for calculating a spin-wait
  *          on the FB, used for delaying LED state changes.
@@ -15,10 +15,6 @@
  */
 #include "delay.h"
 #include "time.h"
-
-
-/* GLOBALS */
-const uint64_t CLOCKS_PER_MILLISECOND = 2600UL;
 
 /**
  * delay

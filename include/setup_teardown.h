@@ -1,9 +1,8 @@
 /*
  * @file setup_teardown.h
- * @brief Project 4
+ * @brief Project 5
  *
- * @details Contains the setup and cleanup prototypes to be implemented
- *          both for the FB and PC variants of the build.
+ * @details Contains the setup and cleanup prototypes.
  *
  * @tools  PC Compiler: GNU gcc 8.3.0
  *         PC Linker: GNU ld 2.32
@@ -20,7 +19,7 @@
  * initialize
  *
  * @details Initializes components needed by a particular platform,
- *          such as LEDs.
+ *          such as LEDs and UART.
  *
  */
 void initialize(void);

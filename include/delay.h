@@ -1,6 +1,6 @@
 /*
  * @file delay.h
- * @brief Project 4
+ * @brief Project 5
  *
  * @details This file contains prototypes for calculating a spin-wait
  *          on various platforms, used for delaying LED state changes.

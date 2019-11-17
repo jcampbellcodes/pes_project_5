@@ -1,0 +1,4 @@
+time.c:24:6:time_init	0	static
+time.c:36:6:SysTick_Handler	12	static
+time.c:42:10:time_passed	12	static
+time.c:57:10:time_now	0	static

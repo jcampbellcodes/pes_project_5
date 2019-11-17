@@ -1,7 +1,7 @@
-logger.c:62:13:PRINT_LOG_PREFIX	32	static
-logger.c:81:6:log_enable	0	static
-logger.c:87:6:log_disable	0	static
-logger.c:92:6:log_enabled	0	static
-logger.c:97:6:log_data	24	static
-logger.c:122:6:log_string	28	static
-logger.c:141:6:log_integer	24	static
+logger.c:87:13:PRINT_LOG_PREFIX	32	static
+logger.c:108:6:log_enable	0	static
+logger.c:114:6:log_disable	0	static
+logger.c:119:6:log_enabled	0	static
+logger.c:124:6:log_data	24	static
+logger.c:149:6:log_string	28	static
+logger.c:168:6:log_integer	24	static

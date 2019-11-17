@@ -1,8 +1,10 @@
 /*
  * @file main.c
- * @brief Project 4
+ * @brief Project 5
  *
- * @details Main controller for the state machine.
+ * @details Main controller for the echo and application modes.
+ *          Echo mode just transmits back any data received from the PC.
+ *          Application mode makes reports for characters send over UART.
  *
  * @author Jack Campbell
  * @tools  PC Compiler: GNU gcc 8.3.0
@@ -29,6 +31,9 @@
 #include "time.h"
 #include "circular_buffer.h"
 
+/**
+ * @brief Define this to enter echo mode, undef to use application mode.
+ */
 #define ECHO_MODE
 
 struct CharCounts_t
@@ -39,7 +44,9 @@ struct CharCounts_t
 static struct CharCounts_t sCharCounts = {{0}};
 
 
-
+/**
+ * @brief How often to print the character report in application mode
+ */
 #define REPORT_TIMER 17
 
 #ifndef ECHO_MODE

@@ -1,6 +1,6 @@
 /*
  * @file handle_led.h
- * @brief Project 4
+ * @brief Project 5
  *
  * @details Contains the prototype for handling LEDs on various platforms.
  *          This may be actually turning an LED on and off or just printing
@@ -20,7 +20,9 @@
 #include <stdint.h>
 #include "led_types.h"
 
-
+/**
+ * @brief Initializes the LED functions.
+ */
 void leds_init();
 
 /**
