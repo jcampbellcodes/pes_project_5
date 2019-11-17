@@ -153,7 +153,7 @@ bool uart_echo(uint8_t* outChar)
 #if USE_UART_INTERRUPTS
 	if(circular_buf_pop(sRxBuffer, outChar) == buff_err_success)
 	{
-		circular_buf_push(sTxBuffer, *outChar);
+		circular_buf_push_resize(&sTxBuffer, *outChar);
 		UART0->C2 |= UART0_C2_TIE_MASK;
 		return true;
 	}
@@ -196,7 +196,7 @@ void UART0_IRQHandler(void) {
 		ch = UART0->D;
 		if (!circular_buf_full(sRxBuffer))
 		{
-			circular_buf_push(sRxBuffer, ch);
+			circular_buf_push_resize(&sRxBuffer, ch);
 		}
 		else
 		{

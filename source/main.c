@@ -34,7 +34,7 @@
 /**
  * @brief Define this to enter echo mode, undef to use application mode.
  */
-//#define ECHO_MODE
+#define ECHO_MODE
 
 struct CharCounts_t
 {
