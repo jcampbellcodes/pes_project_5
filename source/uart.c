@@ -159,6 +159,8 @@ bool uart_echo(uint8_t* outChar)
 	}
 #else
 	uint8_t ch;
+	while(!uart_getchar_present()) {}
+
 	if(uart_getchar(&ch))
 	{
 		*outChar = ch;

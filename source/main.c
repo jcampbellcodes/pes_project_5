@@ -74,6 +74,7 @@ int main(void) {
 	}
 #else // application mode
 
+    uint64_t countdownTimer = 0;
 	while(1)
 	{
 		if(uart_echo(&outChar) == true)
@@ -81,8 +82,9 @@ int main(void) {
 			sCharCounts.mSeen[outChar]++;
 		}
 
-		if((time_now() % REPORT_TIMER) == 0)
+		if((time_passed(countdownTimer) >= REPORT_TIMER))
 		{
+			countdownTimer = time_now();
 			// print the report!
 			LOG_STRING(LOG_MODULE_MAIN,
 					LOG_SEVERITY_STATUS,
