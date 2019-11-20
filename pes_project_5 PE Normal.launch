@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="com.pemicro.debug.gdbjtag.pne.launchConfigurationType">
 <stringAttribute key="com.crt.ctrlcenter.OFSemuDetails" value="PEMicro871ECE7B"/>
-<booleanAttribute key="com.crt.ctrlcenter.saveState" value="true"/>
 <stringAttribute key="com.crt.ctrlcenter.serialNumber" value="USB1 - OpenSDA (871ECE7B)"/>
 <mapAttribute key="com.crt.ctrlcenter.symbolsGroupSettings"/>
 <intAttribute key="com.nxp.mcuxpresso.core.datamodels.ui.launchers.PELaunchConfigHandler.version" value="1"/>
@@ -197,10 +196,10 @@
 <booleanAttribute key="org.eclipse.cdt.dsf.gdb.NON_STOP" value="false"/>
 <booleanAttribute key="org.eclipse.cdt.dsf.gdb.UPDATE_THREADLIST_ON_SUSPEND" value="false"/>
 <intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
-<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Test/test.axf"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Normal/normal.axf"/>
 <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="pes_project_5"/>
 <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
-<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.debug.292313107.1855294049"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.crt.advproject.config.exe.release.1746350820"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/pes_project_5"/>
 </listAttribute>

@@ -22,7 +22,7 @@
 
 bool power_on_self_test()
 {
-	LOG_STRING( LOG_MODULE_POST, LOG_SEVERITY_DEBUG, "Starting power-on self test." );
+	LOG_STRING( LOG_MODULE_POST, LOG_SEVERITY_STATUS, "Starting power-on self test." );
 
 	// Check delays and LED timing
 	LOG_STRING(LOG_MODULE_POST,
@@ -44,7 +44,7 @@ bool power_on_self_test()
     delay(10);
 
     // Log will succeed if uart is enabled correctly
-    LOG_STRING( LOG_MODULE_POST, LOG_SEVERITY_DEBUG, "POST SUCCESS!");
+    LOG_STRING( LOG_MODULE_POST, LOG_SEVERITY_STATUS, "POST SUCCESS!");
 
     return true;
 }

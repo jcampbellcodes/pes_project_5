@@ -113,7 +113,7 @@ bool uart_putchar_space_available ()
 
 bool uart_getchar_present ()
 {
-	set_led(1, BLUE);
+	//set_led(1, BLUE);
     return (UART0->S1 & UART0_S1_RDRF_MASK);
 }
 
@@ -159,7 +159,7 @@ bool uart_echo(uint8_t* outChar)
 	}
 #else
 	uint8_t ch;
-	while(!uart_getchar_present()) {}
+	//while(!uart_getchar_present()) {}
 
 	if(uart_getchar(&ch))
 	{

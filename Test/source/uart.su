@@ -9,4 +9,4 @@ uart.c:120:6:uart_putchar	16	static
 uart.c:130:6:uart_getchar	16	static
 uart.c:144:6:uart_put_string	16	static
 uart.c:151:6:uart_echo	16	static
-uart.c:174:6:UART0_IRQHandler	16	static
+uart.c:176:6:UART0_IRQHandler	16	static
