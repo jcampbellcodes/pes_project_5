@@ -36,6 +36,10 @@
  */
 #define ECHO_MODE
 
+/**
+ * This struct is used in application mode to keep track of how many
+ * of each character have been seen over UART.
+ */
 struct CharCounts_t
 {
 	uint32_t mSeen[0xFF+1];

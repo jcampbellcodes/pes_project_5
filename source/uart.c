@@ -19,13 +19,29 @@
 #include "circular_buffer.h"
 #include <stddef.h>
 
+/**
+ * How many characters we want to initially request for the circular buffer
+ */
 #define UART_CAPACITY 256
 
+/**
+ * Transmit circular buffer
+ */
 static cbuf_handle_t sTxBuffer = NULL;
+
+/**
+ * Receive circular buffer
+ */
 static cbuf_handle_t sRxBuffer = NULL;
 
+/**
+ * Enable interrupt macro
+ */
 #define ENABLE_IRQ NVIC_EnableIRQ(UART0_IRQn);
 
+/**
+ * Disable interrupt macro
+ */
 #define DISABLE_IRQ NVIC_DisableIRQ(UART0_IRQn);
 
 void uart_init(int64_t baud_rate)
@@ -159,7 +175,6 @@ bool uart_echo(uint8_t* outChar)
 	}
 #else
 	uint8_t ch;
-	//while(!uart_getchar_present()) {}
 
 	if(uart_getchar(&ch))
 	{
